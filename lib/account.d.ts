@@ -114,7 +114,9 @@ export declare class Account {
      * @param args Any arguments to the view contract method, wrapped in JSON
      * @returns {Promise<any>}
      */
-    viewFunction(contractId: string, methodName: string, args: any): Promise<any>;
+    viewFunction(contractId: string, methodName: string, args: any, { parse }?: {
+        parse?: (result: Uint8Array) => any;
+    }): Promise<any>;
     /**
      * @returns array of {access_key: AccessKey, public_key: PublicKey} items.
      */

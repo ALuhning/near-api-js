@@ -33,11 +33,11 @@ export class Contract {
             Object.defineProperty(this, methodName, {
                 writable: false,
                 enumerable: true,
-                value: nameFunction(methodName, async (args: object = {}, ...ignored) => {
+                value: nameFunction(methodName, async (args: object = {}, options = {}, ...ignored) => {
                     if (ignored.length || !(isObject(args) || isUint8Array(args))) {
                         throw new PositionalArgsError();
                     }
-                    return this.account.viewFunction(this.contractId, methodName, args);
+                    return this.account.viewFunction(this.contractId, methodName, args, options);
                 })
             });
         });
