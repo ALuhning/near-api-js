@@ -62,15 +62,17 @@ export class WalletConnection {
      * @param title Name of the application that will appear as requesting access in Wallet
      * @param successUrl Optional url to redirect upon success
      * @param failureUrl Optional url to redirect upon failure
+     * @param methodNames Optional method names to add to functionCall access key
      * 
      * @example
      *   walletAccount.requestSignIn(
      *     account-with-deploy-contract,
      *     "Guest Book",
      *     "https://example.com/success.html",
-     *     "https://example.com/error.html");
+     *     "https://example.com/error.html"),
+     *     "method1,method2,method3"
      */
-    async requestSignIn(contractId: string, title: string, successUrl?: string, failureUrl?: string) {
+    async requestSignIn(contractId: string, title: string, successUrl?: string, failureUrl?: string, methodNames?: string) {
         if (this.getAccountId() || await this._keyStore.getKey(this._networkId, this.getAccountId())) {
             return Promise.resolve();
         }
@@ -82,6 +84,7 @@ export class WalletConnection {
         newUrl.searchParams.set('success_url', successUrl || currentUrl.href);
         newUrl.searchParams.set('failure_url', failureUrl || currentUrl.href);
         newUrl.searchParams.set('app_url', currentUrl.origin);
+        newUrl.searchParams.set('method_names', methodNames)
         const accessKey = KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', accessKey.getPublicKey().toString());
         await this._keyStore.setKey(this._networkId, PENDING_ACCESS_KEY_PREFIX + accessKey.getPublicKey(), accessKey);

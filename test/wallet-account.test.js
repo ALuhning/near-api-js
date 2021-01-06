@@ -52,7 +52,7 @@ it('not signed in by default', () => {
 });
 
 it('can request sign in', async () => {
-    await walletConnection.requestSignIn('signInContract', 'signInTitle', 'http://example.com/success',  'http://example.com/fail');
+    await walletConnection.requestSignIn('signInContract', 'signInTitle', 'http://example.com/success',  'http://example.com/fail', 'methodNames');
 
     let accounts = await keyStore.getAccounts('networkId');
     expect(accounts).toHaveLength(1);
@@ -65,7 +65,8 @@ it('can request sign in', async () => {
             contract_id: 'signInContract',
             success_url: 'http://example.com/success',
             failure_url: 'http://example.com/fail',
-            public_key: (await keyStore.getKey('networkId', accounts[0])).publicKey.toString()
+            public_key: (await keyStore.getKey('networkId', accounts[0])).publicKey.toString(),
+            methodNames: 'methodNames'
         }
     });
 });
